@@ -1,0 +1,40 @@
+{
+  "name": "fiedsch/contao-jsonwidget",
+  "description": "widget for Contao Open Source CMS backend forms",
+  "keywords": ["contao", "widgets"],
+  "type": "contao-bundle",
+  "license": "MIT",
+  "version": "0.0.1",
+  "authors": [
+    {
+      "name": "Andreas Fieger",
+      "homepage": "https://github.com/fiedsch"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/fiedsch/contao-jsonwidget/issues",
+    "source": "https://github.com/fiedsch/contao-jsonwidget"
+  },
+  "require": {
+    "php": ">=7.1",
+    "contao/core-bundle":"~4.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Fiedsch\\JsonWidgetBundle\\": "src/"
+    },
+    "classmap": [
+      "src/Resources/contao"
+    ],
+    "exclude-from-classmap": [
+      "src/Resources/contao/config",
+      "src/Resources/contao/languages"
+    ]
+  },
+  "extra": {
+    "contao-manager-plugin": "Fiedsch\\JsonWidgetBundle\\ContaoManager\\Plugin",
+    "branch-alias": {
+      "dev-master": "0.0.x-dev"
+    }
+  }
+}
