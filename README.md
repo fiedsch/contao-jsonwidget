@@ -35,11 +35,12 @@ care of that:
 ```php
 // models/ExtendedMemberModel.php
 namespace Contao;
+use \Fiedsch\JsonWidgetBundle\Trait\JsonGetterSetterTrait;
 
 class ExtendedMemberModel extends \MemberModel
 {
     // let __set() and __get take care of the JSON data
-    use \Fiedsch\JsonGetterSetterTrait;
+    use JsonGetterSetterTrait;
 
   /**
     * The column name we selected for the `jsonWidget` in the example above
