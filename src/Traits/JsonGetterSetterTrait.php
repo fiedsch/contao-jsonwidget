@@ -9,7 +9,7 @@
  * @license MIT
  */
 
-namespace Fiedsch\JsonWidgetBundle\Trait;
+namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
 
