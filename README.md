@@ -35,7 +35,7 @@ care of that:
 ```php
 // models/ExtendedMemberModel.php
 namespace Contao;
-use \Fiedsch\JsonWidgetBundle\Trait\JsonGetterSetterTrait;
+use \Fiedsch\JsonWidgetBundle\Traits\JsonGetterSetterTrait;
 
 class ExtendedMemberModel extends \MemberModel
 {
