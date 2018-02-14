@@ -1,7 +1,7 @@
 {
   "name": "fiedsch/contao-jsonwidget",
   "description": "widget for Contao Open Source CMS backend forms",
-  "keywords": ["contao", "widgets"],
+  "keywords": ["contao", "widget", "json"],
   "type": "contao-bundle",
   "license": "MIT",
   "authors": [
