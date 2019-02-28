@@ -77,7 +77,13 @@ $member->save();
 ```
 
 
-### YAML-Syntax Highlighting with ACE 
+### YAML-Syntax Highlighting with ACE
+
+Set 
+```php
+'eval' => [ /* ... , */ 'rte'=>'ace|yaml'],
+```
+in your DCA definitions.
 
 Quick and dirty way: add desired CSS-Rules like e.g. 
 ```css
