@@ -41,7 +41,7 @@ use \Fiedsch\JsonWidgetBundle\Traits\JsonGetterSetterTrait;
 
 class ExtendedMemberModel extends \MemberModel
 {
-    // let __set() and __get take care of the JSON or YAML data (both at the same time will not work!)
+    // let __set() and __get() take care of the JSON or YAML data (both at the same time will not work!)
     use JsonGetterSetterTrait;
     // or (see above!)
     use YamlGetterSetterTrait;
