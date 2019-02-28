@@ -16,7 +16,9 @@
   },
   "require": {
     "php": ">=7.1",
-    "contao/core-bundle":"~4.4"
+    "ext-json": "*",
+    "contao/core-bundle":"~4.4",
+    "symfony/yaml": "^3.3 || ^4.2"
   },
   "autoload": {
     "psr-4": {

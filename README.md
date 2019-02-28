@@ -1,9 +1,11 @@
-# JSON Widget for Contao
+# JSON and YAML Widgets for Contao
 
 The `jsonWidget` can be used in DCA files to create a text field that contains a JSON string.
 While saving it will be checked if that the string is valid JSON. 
 The widget displays the JSON string with `JSON_PRETTY_PRINT` so that checking/finding errors 
 is easier for the user.
+
+The `yamlWidget` is mostly the same, except that it uses the YAML format.
   
 
 ## Example: extending Members
@@ -73,3 +75,16 @@ $member->a_key_for_a_scalar_value = "fourtytwo";
 $member->key_for_an_array = ['an','array','containing','some','strings'];
 $member->save();
 ```
+
+
+### YAML-Syntax Highlighting with ACE 
+
+Quick and dirty way: add desired CSS-Rules like e.g. 
+```css
+.ace_comment {
+  color: red !important;
+  font-weight: bold;
+}
+```
+to your `be_ace.html5` (which you create it if you do not yet have a custom version).
+OR: use a custom backend style and add the CSS rules there.
