@@ -35,15 +35,16 @@ class WidgetJSON extends TextArea
     {
         $varValue = $this->getPost($this->strName);
         if (empty($varValue)) {
-            // the empty string is not a valid jSON string. So we set it to
+            // the empty string is not a valid JSON string. So we set it to
             // the string representation of an empty JSON object.
-            \Input::setPost($this->strName, '{}');
+            Input::setPost($this->strName, '{}');
         }
         parent::validate();
     }
 
     /**
      * @param mixed $varInput
+     * @return mixed
      */
     public function validator($varInput)
     {
