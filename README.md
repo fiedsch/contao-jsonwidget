@@ -41,14 +41,22 @@ use \Fiedsch\JsonWidgetBundle\Traits\JsonGetterSetterTrait;
 
 class ExtendedMemberModel extends \MemberModel
 {
-    // let __set() and __get take care of the JSON data
+    // let __set() and __get take care of the JSON or YAML data (both at the same time will not work!)
     use JsonGetterSetterTrait;
+    // or (see above!)
+    use YamlGetterSetterTrait;
 
   /**
     * The column name we selected for the `jsonWidget` in the example above
     * @var string
     */
-    protected static $strJsonColumn = 'json_data';
+    protected static $strJsonColumn = 'my_json_data_column';
+    
+    /**
+      * Same thing for the `yamlWidget`
+      * @var string
+      */
+    protected static $strYamlColumn = 'my_yaml_data_column';
 
 }
 ```
@@ -73,7 +81,8 @@ printf("transparently accessing a field from the JSON data ... '%s'\n", $member-
 // set values and store in database
 $member->a_key_for_a_scalar_value = "fourtytwo";
 $member->key_for_an_array = ['an','array','containing','some','strings'];
-$member->save();
+$member->save(); // Note that saving will lose comments in your YAML-data 
+                 // as Symfony\Component\Yaml\Yaml will not save them 
 ```
 
 
@@ -83,7 +92,7 @@ Set
 ```php
 'eval' => [ /* ... , */ 'rte'=>'ace|yaml'],
 ```
-in your DCA definitions.
+in your field's DCA definitions.
 
 Quick and dirty way: add desired CSS-Rules like e.g. 
 ```css
