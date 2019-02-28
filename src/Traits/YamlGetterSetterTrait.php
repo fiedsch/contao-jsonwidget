@@ -33,7 +33,7 @@ trait YamlGetterSetterTrait {
             $value = null;
             if (!is_null($this->arrData[static::$strYamlColumn])) {
                 $yamlString = $this->arrData[static::$strYamlColumn];
-                if (!empty($jsonString)) {
+                if (!empty($yamlString)) {
                     try {
                         $yamlData = Yaml::parse($yamlString);
                         $value = isset($yamlData[$strKey]) ? $yamlData[$strKey] : null;
