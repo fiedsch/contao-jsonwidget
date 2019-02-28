@@ -28,7 +28,6 @@ class WidgetYAML extends TextArea
     public function __construct($arrAttributes=null)
     {
         parent::__construct($arrAttributes);
-        // $this->rte = 'ace|yaml'; // siehe generate()
     }
 
     /**
@@ -38,7 +37,7 @@ class WidgetYAML extends TextArea
     {
         $varValue = $this->getPost($this->strName);
         if (null === $varValue) {
-            // NULL values can not be pared as YAML. So we set theparameter
+            // NULL values can not be pared as YAML. So we set the parameter
             // to an empty string which -- when parsed -- returns a NULL value.
             Input::setPost($this->strName, '');
         }
@@ -68,10 +67,7 @@ class WidgetYAML extends TextArea
      */
     public function generate()
     {
-        $be_ace = new BackendTemplate('be_ace');
-        $be_ace->selector = 'ctrl_'.$this->id;
-        $be_ace->type = 'yaml';
-        return parent::generate().$be_ace->parse();
+        return parent::generate();
     }
 
 }
