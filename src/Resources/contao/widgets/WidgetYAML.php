@@ -51,7 +51,9 @@ class WidgetYAML extends TextArea
     public function validator($varInput)
     {
         try {
-            Yaml::parse($varInput);
+            if (!empty($varInput) && null === Yaml::parse($varInput)) {
+                $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_yaml']);
+            }
         } catch (ParseException $e) {
             $this->addError($e->getMessage());
         }
