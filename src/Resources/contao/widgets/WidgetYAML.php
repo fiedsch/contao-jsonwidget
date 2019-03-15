@@ -53,10 +53,14 @@ class WidgetYAML extends TextArea
         try {
             if (!empty($varInput) && null === Yaml::parse($varInput)) {
                 $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_yaml']);
+            } else {
+                // revert the effect of prettyPrintYaml() in generate()
+                $varInput = $this->minifyYaml($varInput);
             }
         } catch (ParseException $e) {
             $this->addError($e->getMessage());
         }
+
         return parent::validator($varInput);
     }
 
@@ -67,7 +71,25 @@ class WidgetYAML extends TextArea
      */
     public function generate()
     {
+        $this->varValue = $this->prettyPrintYaml($this->varValue);
         return parent::generate();
     }
 
+    /**
+     * @param string $value
+     * @return string
+     */
+    protected function minifyYaml($value)
+    {
+        return Yaml::dump(Yaml::parse($value), 1);
+    }
+
+    /**
+     * @param string $value
+     * @return string
+     */
+    protected function prettyPrintYaml($value)
+    {
+        return Yaml::dump(Yaml::parse($value), 10);
+    }
 }
