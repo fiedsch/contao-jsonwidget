@@ -81,7 +81,7 @@ class WidgetYAML extends TextArea
      */
     protected function minifyYaml($value)
     {
-        return Yaml::dump(Yaml::parse($value), 1);
+        return Yaml::dump(Yaml::parse($value), 0);
     }
 
     /**
