@@ -50,8 +50,11 @@ class WidgetYAML extends TextArea
      */
     public function validator($varInput)
     {
+        if ('' === trim($varInput)) {
+            return parent::validator($varInput);
+        }
         try {
-            if (!empty($varInput) && null === Yaml::parse($varInput)) {
+            if (null === Yaml::parse($varInput)) {
                 $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_yaml']);
             } else {
                 // revert the effect of prettyPrintYaml() in generate()
@@ -81,6 +84,7 @@ class WidgetYAML extends TextArea
      */
     protected function minifyYaml($value)
     {
+        if ('' === trim($value)) { return ''; }
         return Yaml::dump(Yaml::parse($value), 0);
     }
 
@@ -90,6 +94,7 @@ class WidgetYAML extends TextArea
      */
     protected function prettyPrintYaml($value)
     {
+        if ('' === trim($value)) { return ''; }
         return Yaml::dump(Yaml::parse($value), 10);
     }
 }
