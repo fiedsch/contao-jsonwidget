@@ -99,7 +99,6 @@ Quick and dirty way: add desired CSS-Rules like e.g.
 ```css
 .ace_comment {
   color: red !important;
-  font-weight: bold;
 }
 ```
 to your `be_ace.html5` (which you create it if you do not yet have a custom version).
