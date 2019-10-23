@@ -85,7 +85,12 @@ class WidgetYAML extends TextArea
     protected function minifyYaml($value)
     {
         if ('' === trim($value)) { return ''; }
-        return Yaml::dump(Yaml::parse($value), 0);
+        try {
+            return Yaml::dump(Yaml::parse($value), 0);
+        } catch (ParseException $e) {
+            $this->addError($e->getMessage());
+            return $value;
+        }
     }
 
     /**
@@ -95,6 +100,11 @@ class WidgetYAML extends TextArea
     protected function prettyPrintYaml($value)
     {
         if ('' === trim($value)) { return ''; }
-        return Yaml::dump(Yaml::parse($value), 10);
+        try {
+            return Yaml::dump(Yaml::parse($value), 10);
+        } catch (ParseException $e) {
+            $this->addError($e->getMessage());
+            return $value;
+        }
     }
 }
