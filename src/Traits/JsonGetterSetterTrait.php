@@ -1,4 +1,5 @@
-<?php
+<?php declare(strict_types=1);
+
 /**
  * bundle for Contao Open Source CMS
  *
@@ -13,7 +14,8 @@ namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
 
-trait JsonGetterSetterTrait {
+trait JsonGetterSetterTrait
+{
 
     /**
      * Return an object property
@@ -46,7 +48,8 @@ trait JsonGetterSetterTrait {
      * @param string $strKey the property key (the name of the column/dca field)
      * @param mixed $varValue the property value
      */
-    public function __set($strKey, $varValue) {
+    public function __set($strKey, $varValue)
+    {
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if ($strKey === static::$strJsonColumn) {
             throw new \RuntimeException("you can not access this column directly");
