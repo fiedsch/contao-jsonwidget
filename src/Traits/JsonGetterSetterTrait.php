@@ -46,7 +46,7 @@ trait JsonGetterSetterTrait
     {
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if ($strKey === static::$strJsonColumn) {
-            throw new \RuntimeException("you can not access this column directly");
+            throw new \RuntimeException("you can not access this column directly. Use setJsonColumnData() instead.");
         }
         if (in_array($strKey, $tableColumns)) {
             parent::__set($strKey, $varValue);
@@ -59,17 +59,16 @@ trait JsonGetterSetterTrait
 
     /**
      * @param $strKey
-     * @param $jsonData
      */
-    public function __unset($strKey, $jsonData): void
+    public function __unset($strKey): void
     {
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if (in_array($strKey, $tableColumns)) {
             throw new RuntimeException("unset can only be used for data in the JSON-column");
         }
-        $jsonData = $this->getJsonData();
-        unset($jsonData[$strKey]);
-        $this->setJsonColumnData($jsonData);
+        $data = $this->getJsonData();
+        unset($data[$strKey]);
+        $this->setJsonColumnData($data);
     }
 
     /**
@@ -85,6 +84,9 @@ trait JsonGetterSetterTrait
             $jsonData = [];
         } else {
             $jsonData = json_decode($jsonString, true);
+        }
+        if (null === $jsonData) {
+            $jsonData = [];
         }
 
         return $jsonData;

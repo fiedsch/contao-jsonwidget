@@ -12,10 +12,12 @@
 namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
-use Symfony\Component\Yaml\Yaml;
+use RuntimeException;
 use Symfony\Component\Yaml\Exception\ParseException;
+use Symfony\Component\Yaml\Yaml;
 
-trait YamlGetterSetterTrait {
+trait YamlGetterSetterTrait
+{
 
     /**
      * Return an object property
@@ -25,24 +27,14 @@ trait YamlGetterSetterTrait {
      */
     public function __get($strKey)
     {
-        // FIXME: is \Model::getUniqueFields() cheaper than directly querying the database?
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if (in_array($strKey, $tableColumns)) {
             $value = parent::__get($strKey);
         } else {
-            $value = null;
-            if (!is_null($this->arrData[static::$strYamlColumn])) {
-                $yamlString = $this->arrData[static::$strYamlColumn];
-                if (!empty($yamlString)) {
-                    try {
-                        $yamlData = Yaml::parse($yamlString);
-                        $value = isset($yamlData[$strKey]) ? $yamlData[$strKey] : null;
-                    } catch (ParseException $e) {
-                        // ignored
-                    }
-                }
-            }
+            $yamlData = $this->getYamlData();
+            $value = isset($yamlData[$strKey]) ? $yamlData[$strKey] : null;
         }
+
         return $value;
     }
 
@@ -52,28 +44,64 @@ trait YamlGetterSetterTrait {
      * @param string $strKey the property key (the name of the column/dca field)
      * @param mixed $varValue the property value
      */
-    public function __set($strKey, $varValue) {
+    public function __set($strKey, $varValue)
+    {
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if ($strKey === static::$strYamlColumn) {
-            throw new \RuntimeException("you can not access this column directly");
+            throw new RuntimeException("you can not access this column directly. Use setYamlColumnData() instead.");
         }
         if (in_array($strKey, $tableColumns)) {
             parent::__set($strKey, $varValue);
         } else {
-            $yamlString = $this->arrData[static::$strYamlColumn];
-            $yamlData = null;
-            if (!empty($yamlString)) {
-                try {
-                    $yamlData = Yaml::parse($yamlString);
-                } catch (ParseException $e) {
-                    // ignored
-                }
-            }
-            if (is_null($yamlData)) { $yamlData = []; }
+            $yamlData = $this->getYamlData();
             $yamlData[$strKey] = $varValue;
-            $yamlStr = Yaml::dump($yamlData, 10); // Note: we lose comments in our YAML here :-(
-            parent::__set(static::$strYamlColumn, $yamlStr);
+            $this->setYamlColumnData($yamlData);
         }
+    }
+
+    /**
+     * @param $strKey
+     */
+    public function __unset($strKey): void
+    {
+        $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
+        if (in_array($strKey, $tableColumns)) {
+            throw new RuntimeException("unset can only be used for data in the YAML-column");
+        }
+        $data = $this->getYamlData();
+        unset($data[$strKey]);
+        $this->setYamlColumnData($data);
+    }
+
+    /**
+     * Return the data in static::$strYamlColumn as an array
+     *
+     * @return array
+     */
+    protected function getYamlData(): array
+    {
+        try {
+            $yamlData = Yaml::parse($this->arrData[static::$strYamlColumn]);
+        } catch (ParseException $e) {
+            // ignored
+            $yamlData = [];
+        }
+        if (null === $yamlData) {
+            $yamlData = [];
+        }
+
+        return $yamlData;
+    }
+
+    /**
+     * Set data in static::$strJsonColumn (overwriting previously set values)
+     *
+     * @param array $data
+     */
+    public function setYamlColumnData(array $data): void
+    {
+        $yamlStr = Yaml::dump($data, 10); // Note: we lose comments in our YAML here :-(
+        parent::__set(static::$strYamlColumn, $yamlStr);
     }
 
 }
