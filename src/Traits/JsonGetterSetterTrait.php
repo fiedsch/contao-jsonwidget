@@ -13,6 +13,7 @@
 namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
+use RuntimeException;
 
 trait JsonGetterSetterTrait
 {
@@ -25,19 +26,12 @@ trait JsonGetterSetterTrait
      */
     public function __get($strKey)
     {
-        // FIXME: is \Model::getUniqueFields() cheaper than directly querying the database?
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if (in_array($strKey, $tableColumns)) {
             $value = parent::__get($strKey);
         } else {
-            $value = null;
-            if (!is_null($this->arrData[static::$strJsonColumn])) {
-                $jsonString = $this->arrData[static::$strJsonColumn];
-                if (!empty($jsonString)) {
-                    $jsonData = json_decode($jsonString, true);
-                    $value = isset($jsonData[$strKey]) ? $jsonData[$strKey] : null;
-                }
-            }
+            $jsonData = $this->getJsonData();
+            $value = isset($jsonData[$strKey]) ? $jsonData[$strKey] : null;
         }
         return $value;
     }
@@ -57,16 +51,55 @@ trait JsonGetterSetterTrait
         if (in_array($strKey, $tableColumns)) {
             parent::__set($strKey, $varValue);
         } else {
-            $jsonString = $this->arrData[static::$strJsonColumn];
-            $jsonData = null;
-            if (!empty($jsonString)) {
-                $jsonData = json_decode($jsonString, true);
-            }
-            if (is_null($jsonData)) { $jsonData = []; }
+            $jsonData = $this->getJsonData();
             $jsonData[$strKey] = $varValue;
-            $jsonStr = json_encode($jsonData, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
-            parent::__set(static::$strJsonColumn, $jsonStr);
+            $this->setJsonColumnData($jsonData);
         }
+    }
+
+    /**
+     * @param $strKey
+     * @param $jsonData
+     */
+    public function __unset($strKey, $jsonData): void
+    {
+        $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
+        if (in_array($strKey, $tableColumns)) {
+            throw new RuntimeException("unset can only be used for data in the JSON-column");
+        }
+        $jsonData = $this->getJsonData();
+        unset($jsonData[$strKey]);
+        $this->setJsonColumnData($jsonData);
+    }
+
+    /**
+     * Return the data in static::$strJsonColumn as an array
+     *
+     * @return array
+     */
+    protected function getJsonData(): array
+    {
+        $jsonString = $this->arrData[static::$strJsonColumn];
+
+        if (empty($jsonString)) {
+            $jsonData = [];
+        } else {
+            $jsonData = json_decode($jsonString, true);
+        }
+
+        return $jsonData;
+    }
+
+
+    /**
+     * Set data in static::$strJsonColumn (overwriting previously set values)
+     *
+     * @param array $data
+     */
+    public function setJsonColumnData(array $data): void
+    {
+        $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        parent::__set(static::$strJsonColumn, $jsonStr);
     }
 
 }
