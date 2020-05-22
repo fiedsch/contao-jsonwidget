@@ -3,7 +3,7 @@
 /**
  * bundle for Contao Open Source CMS
  *
- * Copyright (c) 2016-2018 Andreas Fieger
+ * Copyright (c) 2016-2020 Andreas Fieger
  *
  * @package fiedsch/contao-jsonwidget
  * @author  Andreas Fieger
