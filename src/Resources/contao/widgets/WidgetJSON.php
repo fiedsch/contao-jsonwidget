@@ -11,6 +11,8 @@
 
 namespace Contao;
 
+use Fiedsch\JsonWidgetBundle\Helper\Helper;
+
 /**
  * Class WidgetJSON
  * Provide a widget for JSON data.
@@ -39,6 +41,7 @@ class WidgetJSON extends TextArea
             // the string representation of an empty JSON object.
             Input::setPost($this->strName, '{}');
         }
+        $varValue = Helper::cleanUpString($varValue);
         parent::validate();
     }
 
@@ -48,6 +51,7 @@ class WidgetJSON extends TextArea
      */
     public function validator($varInput)
     {
+        $varInput = Helper::cleanUpString($varInput);
         if (null === json_decode($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_json']);
         } else {

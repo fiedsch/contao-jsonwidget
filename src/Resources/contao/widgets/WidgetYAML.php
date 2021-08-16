@@ -11,6 +11,7 @@
 
 namespace Contao;
 
+use Fiedsch\JsonWidgetBundle\Helper\Helper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
 
@@ -41,6 +42,7 @@ class WidgetYAML extends TextArea
             // to an empty string which -- when parsed -- returns a NULL value.
             Input::setPost($this->strName, '');
         }
+        $varValue = Helper::cleanUpString($varValue);
         parent::validate();
     }
 
@@ -50,6 +52,7 @@ class WidgetYAML extends TextArea
      */
     public function validator($varInput)
     {
+        $varInput = Helper::cleanUpString($varInput);
         if ('' === trim($varInput)) {
             return parent::validator($varInput);
         }
