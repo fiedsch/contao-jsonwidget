@@ -16,7 +16,7 @@ The `yamlWidget` is mostly the same, except that it uses the YAML format.
 $GLOBALS['TL_DCA']['tl_member']['fields']['json_data'] = [
    'inputType' => 'jsonWidget',
    'label'     => &$GLOBALS['TL_LANG']['tl_member']['json_data'],
-   'eval'      => ['tl_style' => 'long', 'decodeEntities' => false, 'allowHtml' => false], 
+   'eval'      => ['tl_style' => 'long', 'decodeEntities' => true, 'allowHtml' => true], 
    'sql'       => "blob NULL",
  ];
  
