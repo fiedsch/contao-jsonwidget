@@ -20,6 +20,9 @@
     "contao/core-bundle":"~4.4",
     "symfony/yaml": "^3.3 || ^4.2 || ^5.0"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5"
+  },
   "autoload": {
     "psr-4": {
       "Fiedsch\\JsonWidgetBundle\\": "src/"
@@ -31,6 +34,11 @@
       "src/Resources/contao/config",
       "src/Resources/contao/languages"
     ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Fiedsch\\JsonWidgetBundle\\Tests\\": "tests/"
+    }
   },
   "extra": {
     "contao-manager-plugin": "Fiedsch\\JsonWidgetBundle\\ContaoManager\\Plugin",
