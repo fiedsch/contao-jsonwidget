@@ -103,3 +103,25 @@ Quick and dirty way: add desired CSS-Rules like e.g.
 ```
 to your `be_ace.html5` (which you create it if you do not yet have a custom version).
 OR: use a custom backend style and add the CSS rules there.
+
+
+### Set JSON (or JAML) Data 
+
+If you want to set all the JSON (or YAML) data at once you cannot use
+```php
+# In this example we assume $strJsonColumn = 'json_data';
+$data = [ 'foo' => 1, 'bar' => 'baz ];
+$model->json_data = $data; # will throw an exception
+```
+To do this you have to use
+```php
+$data = [ 'foo' => 1, 'bar' => 'baz ];
+$model->setJsonColumnData(array $data);
+# or
+# $model->setYamlColumnData(array $data);
+```
+Note that this way previously set JSON (or YAML) data is overwritten.
+
+Also note that the behaviour of `setJsonColumnData([])` (when setting an empty data array) changed in version `0.5.0`. Previously  it created `[]` where it 
+now creates `{}` in the respective database column.
+

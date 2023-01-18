@@ -14,6 +14,10 @@ namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
 use RuntimeException;
+use const JSON_FORCE_OBJECT;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
+
 
 trait JsonGetterSetterTrait
 {
@@ -100,7 +104,7 @@ trait JsonGetterSetterTrait
      */
     public function setJsonColumnData(array $data): void
     {
-        $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE  | JSON_FORCE_OBJECT);
         parent::__set(static::$strJsonColumn, $jsonStr);
     }
 
