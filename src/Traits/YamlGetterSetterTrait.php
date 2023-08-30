@@ -81,7 +81,7 @@ trait YamlGetterSetterTrait
     protected function getYamlData(): array
     {
         try {
-            $yamlData = Yaml::parse($this->arrData[static::$strYamlColumn]);
+            $yamlData = Yaml::parse($this->arrData[static::$strYamlColumn])  ?? '';
         } catch (ParseException $e) {
             // ignored
             $yamlData = [];

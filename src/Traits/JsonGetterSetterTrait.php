@@ -82,7 +82,7 @@ trait JsonGetterSetterTrait
      */
     protected function getJsonData(): array
     {
-        $jsonString = $this->arrData[static::$strJsonColumn];
+        $jsonString = $this->arrData[static::$strJsonColumn] ?? '';
 
         if (empty($jsonString)) {
             $jsonData = [];
