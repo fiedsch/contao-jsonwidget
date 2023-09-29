@@ -12,6 +12,8 @@
 namespace Contao;
 
 use Fiedsch\JsonWidgetBundle\Helper\Helper;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 
 /**
  * Class WidgetJSON

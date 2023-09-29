@@ -104,7 +104,11 @@ trait JsonGetterSetterTrait
      */
     public function setJsonColumnData(array $data): void
     {
-        $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE  | JSON_FORCE_OBJECT);
+        // Using JSON_FORCE_OBJECT in json_encode() below would make every empty array an object
+        // in the JSON data. We only want to achieve this on the top level (i.t. empty $data should
+        // yield {} and not []).
+        if (empty($data)) { $data = new \stdClass(); }
+        $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
         parent::__set(static::$strJsonColumn, $jsonStr);
     }
 
