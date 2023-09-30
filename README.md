@@ -123,5 +123,9 @@ $model->setJsonColumnData(array $data);
 Note that this way previously set JSON (or YAML) data is overwritten.
 
 Also note that the behaviour of `setJsonColumnData([])` (when setting an empty data array) changed in version `0.5.0`. Previously  it created `[]` where it 
-now creates `{}` in the respective database column.
+now creates `{}` in the respective database column. 
 
+In version `0.7.0` we slightly changed this again to achieve the original goal: The storage of empty arrays as object (`{}`) is only enforced on the top level 
+of the data. In lower levels, empty arrays will be stored as arrays (`[]`) not as "empty" objects (`{}`): compare
+`{ "foo": [] }` (versions >= 0.7.0) to `{ "foo": {} }` (versions >=0.5.0 and <0.7.0). 
+```
