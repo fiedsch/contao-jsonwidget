@@ -82,7 +82,12 @@ class WidgetJSON extends TextArea
      */
     protected function prettyPrintJson($jsonString)
     {
-        $decoded = json_decode($jsonString);
+        // The following is a hack, needed if the data was saved without using this widget with Contao's(?) encoding of form data in place, which saves " as &quot; in the raw JSON data:
+        // Instead of
+        // $decoded = json_decode($jsonString);
+        // we do:
+        $fixedJsonString = str_replace('&quot;', '\"', $jsonString);
+        $decoded = json_decode($fixedJsonString);
         if (null === $decoded) {
             return $jsonString;
         }
