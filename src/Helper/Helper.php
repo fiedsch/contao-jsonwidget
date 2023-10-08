@@ -14,9 +14,10 @@ class Helper
      * }
      * </code>
      */
-    public static function cleanUpString($value): string
+    public static function cleanUpString(string $value): string
     {
         $mapping = [
+            '&#92;&#34;' => '\"',
             '&#35;' => '#',
             '&#60;' => '<',
             '&#62;' => '>',
@@ -24,10 +25,19 @@ class Helper
             '&#41;' => ')',
             '&#92;'  => '\\',
             '&#61;' => '=',
-            '&#34;' => '"', // would also be handled by using flag ENT_QUOTES
-            '&#39;' => "'", // dito
+            '&#34;' => '"',
+            '&#39;' => "'",
         ];
 
         return html_entity_decode(str_replace(array_keys($mapping), array_values($mapping), $value), ENT_QUOTES);
+    }
+
+    /**
+     * A helper function (a hack) that is needed whenthe (raw) JSON data was saved and contained &quot; or &#34; entities.
+     * We need to change these to \" in order not to run into JSON-errors when applying self::cleanUpSting() (see comment there/above).
+     */
+    public static function quoteHack(?string $value): string
+    {
+        return str_replace(['&quot;', '&#34;'], ['\"', '\"'], $value);
     }
 }
