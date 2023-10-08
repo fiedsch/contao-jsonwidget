@@ -24,7 +24,7 @@ class WidgetJSON extends TextArea
 
     /**
      * Initialize the object
-     * @param array
+     * @param array $arrAttributes
      */
     public function __construct($arrAttributes=null)
     {
@@ -86,7 +86,7 @@ class WidgetJSON extends TextArea
         // Instead of
         // $decoded = json_decode($jsonString);
         // we do:
-        $fixedJsonString = str_replace('&quot;', '\"', $jsonString);
+        $fixedJsonString = str_replace(['&quot;', '&#34;'], ['\"', '\"'], $jsonString);
         $decoded = json_decode($fixedJsonString);
         if (null === $decoded) {
             return $jsonString;
