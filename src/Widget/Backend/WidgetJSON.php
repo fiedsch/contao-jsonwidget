@@ -9,9 +9,11 @@
  * @license MIT
  */
 
-namespace Contao;
+namespace Fiedsch\JsonWidgetBundle\Widget\Backend;
 
 use Fiedsch\JsonWidgetBundle\Helper\Helper;
+use Contao\TextArea;
+use Contao\Input;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 
@@ -34,6 +36,7 @@ class WidgetJSON extends TextArea
 
     /**
      * Validate input and set value
+     * @return void
      */
     public function validate()
     {
@@ -41,9 +44,10 @@ class WidgetJSON extends TextArea
         if (empty($varValue)) {
             // the empty string is not a valid JSON string. So we set it to
             // the string representation of an empty JSON object.
-            Input::setPost($this->strName, '{}');
+            $varValue = '{}';
         }
         $varValue = Helper::cleanUpString($varValue);
+        Input::setPost($this->strName, $varValue);
         parent::validate();
     }
 
@@ -53,6 +57,9 @@ class WidgetJSON extends TextArea
      */
     public function validator($varInput)
     {
+        if ('' === trim($varInput)) {
+            return parent::validator($varInput);
+        }
         $varInput = Helper::cleanUpString($varInput);
         if (null === json_decode($varInput)) {
             $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_json']);
@@ -77,16 +84,14 @@ class WidgetJSON extends TextArea
     /**
      * Pretty print a JSON string
      *
-     * @param $jsonString
      * @return string
      */
-    protected function prettyPrintJson($jsonString)
+    protected function prettyPrintJson(?string $jsonString)
     {
-        // The following is a hack, needed if the data was saved without using this widget with Contao's(?) encoding of form data in place, which saves " as &quot; in the raw JSON data:
-        // Instead of
-        // $decoded = json_decode($jsonString);
-        // we do:
-        $fixedJsonString = str_replace(['&quot;', '&#34;'], ['\"', '\"'], $jsonString);
+        if (null === $jsonString) {
+            return '{}';
+        }
+        $fixedJsonString = Helper::quoteHack($jsonString);
         $decoded = json_decode($fixedJsonString);
         if (null === $decoded) {
             return $jsonString;
@@ -97,11 +102,13 @@ class WidgetJSON extends TextArea
     /**
      * Make a compact version of a (potentially) pretty printed JSON string
      *
-     * @param $jsonString
      * @return string
      */
-    protected function minifyJson($jsonString)
+    protected function minifyJson(?string $jsonString)
     {
+        if (null === $jsonString) {
+            return '{}';
+        }
         $decoded = json_decode($jsonString);
         if (null === $decoded) {
             return $jsonString;

@@ -14,10 +14,9 @@ namespace Fiedsch\JsonWidgetBundle\Traits;
 
 use Contao\Database;
 use RuntimeException;
-use const JSON_FORCE_OBJECT;
+use stdClass;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
-
 
 trait JsonGetterSetterTrait
 {
@@ -28,14 +27,16 @@ trait JsonGetterSetterTrait
      * @param string $strKey the property key (e.g. the name of the column/dca field)
      * @return mixed|null the property value or null if the property does not exist/is not set
      */
-    public function __get($strKey)
+    public function __get(string $strKey)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if (in_array($strKey, $tableColumns)) {
+            /** @noinspection PhpUndefinedClassInspection */
             $value = parent::__get($strKey);
         } else {
             $jsonData = $this->getJsonData();
-            $value = isset($jsonData[$strKey]) ? $jsonData[$strKey] : null;
+            $value = $jsonData[$strKey] ?? null;
         }
         return $value;
     }
@@ -46,13 +47,16 @@ trait JsonGetterSetterTrait
      * @param string $strKey the property key (the name of the column/dca field)
      * @param mixed $varValue the property value
      */
-    public function __set($strKey, $varValue)
+    public function __set(string $strKey, mixed $varValue)
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
+        /** @noinspection PhpUndefinedFieldInspection */
         if ($strKey === static::$strJsonColumn) {
-            throw new \RuntimeException("you can not access this column directly. Use setJsonColumnData() instead.");
+            throw new RuntimeException("you can not access this column directly. Use setJsonColumnData() instead.");
         }
         if (in_array($strKey, $tableColumns)) {
+            /** @noinspection PhpUndefinedClassInspection */
             parent::__set($strKey, $varValue);
         } else {
             $jsonData = $this->getJsonData();
@@ -66,6 +70,7 @@ trait JsonGetterSetterTrait
      */
     public function __unset($strKey): void
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
         if (in_array($strKey, $tableColumns)) {
             throw new RuntimeException("unset can only be used for data in the JSON-column");
@@ -82,6 +87,7 @@ trait JsonGetterSetterTrait
      */
     protected function getJsonData(): array
     {
+        /** @noinspection PhpUndefinedFieldInspection */
         $jsonString = $this->arrData[static::$strJsonColumn] ?? '';
 
         if (empty($jsonString)) {
@@ -107,8 +113,10 @@ trait JsonGetterSetterTrait
         // Using JSON_FORCE_OBJECT in json_encode() below would make every empty array an object
         // in the JSON data. We only want to achieve this on the top level (i.t. empty $data should
         // yield {} and not []).
-        if (empty($data)) { $data = new \stdClass(); }
+        if (empty($data)) { $data = new stdClass(); }
         $jsonStr = json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        /** @noinspection PhpUndefinedClassInspection */
+        /** @noinspection PhpUndefinedFieldInspection */
         parent::__set(static::$strJsonColumn, $jsonStr);
     }
 

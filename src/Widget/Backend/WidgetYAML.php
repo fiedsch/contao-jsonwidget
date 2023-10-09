@@ -9,11 +9,13 @@
  * @license MIT
  */
 
-namespace Contao;
+namespace Fiedsch\JsonWidgetBundle\Widget\Backend;
 
 use Fiedsch\JsonWidgetBundle\Helper\Helper;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Yaml;
+use Contao\TextArea;
+use Contao\Input;
 
 /**
  * Class WidgetYAML
@@ -24,7 +26,7 @@ class WidgetYAML extends TextArea
 
     /**
      * Initialize the object
-     * @param array
+     * @param array $arrAttributes
      */
     public function __construct($arrAttributes=null)
     {
@@ -40,9 +42,10 @@ class WidgetYAML extends TextArea
         if (null === $varValue) {
             // NULL values can not be pared as YAML. So we set the parameter
             // to an empty string which -- when parsed -- returns a NULL value.
-            Input::setPost($this->strName, '');
+            $varValue = '';
         }
         $varValue = Helper::cleanUpString($varValue);
+        Input::setPost($this->strName, $varValue);
         parent::validate();
     }
 
@@ -52,10 +55,10 @@ class WidgetYAML extends TextArea
      */
     public function validator($varInput)
     {
-        $varInput = Helper::cleanUpString($varInput);
         if ('' === trim($varInput)) {
             return parent::validator($varInput);
         }
+        $varInput = Helper::cleanUpString($varInput);
         try {
             if (null === Yaml::parse($varInput)) {
                 $this->addError($GLOBALS['TL_LANG']['MSC']['json_widget_invalid_yaml']);
@@ -85,7 +88,7 @@ class WidgetYAML extends TextArea
      * @param string $value
      * @return string
      */
-    protected function minifyYaml($value)
+    protected function minifyYaml(string $value)
     {
         if ('' === trim($value)) { return ''; }
         try {
@@ -100,7 +103,7 @@ class WidgetYAML extends TextArea
      * @param string $value
      * @return string
      */
-    protected function prettyPrintYaml($value)
+    protected function prettyPrintYaml(string $value)
     {
         if ('' === trim($value)) { return ''; }
         try {

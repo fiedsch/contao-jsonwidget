@@ -26,14 +26,7 @@
   "autoload": {
     "psr-4": {
       "Fiedsch\\JsonWidgetBundle\\": "src/"
-    },
-    "classmap": [
-      "src/Resources/contao"
-    ],
-    "exclude-from-classmap": [
-      "src/Resources/contao/config",
-      "src/Resources/contao/languages"
-    ]
+    }
   },
   "autoload-dev": {
     "psr-4": {
@@ -43,7 +36,7 @@
   "extra": {
     "contao-manager-plugin": "Fiedsch\\JsonWidgetBundle\\ContaoManager\\Plugin",
     "branch-alias": {
-      "dev-master": "0.0.x-dev"
+      "dev-main": "0.8.x-dev"
     }
   }
 }
