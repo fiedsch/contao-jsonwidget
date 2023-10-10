@@ -27,7 +27,7 @@ trait JsonGetterSetterTrait
      * @param string $strKey the property key (e.g. the name of the column/dca field)
      * @return mixed|null the property value or null if the property does not exist/is not set
      */
-    public function __get(string $strKey)
+    public function __get($strKey)
     {
         /** @noinspection PhpUndefinedFieldInspection */
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
@@ -47,7 +47,7 @@ trait JsonGetterSetterTrait
      * @param string $strKey the property key (the name of the column/dca field)
      * @param mixed $varValue the property value
      */
-    public function __set(string $strKey, mixed $varValue)
+    public function __set($strKey, $varValue)
     {
         /** @noinspection PhpUndefinedFieldInspection */
         $tableColumns = Database::getInstance()->getFieldNames(static::$strTable);
