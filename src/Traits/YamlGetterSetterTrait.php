@@ -24,6 +24,7 @@ trait YamlGetterSetterTrait
      *
      * @param string $strKey the property key (e.g. the name of the column/dca field)
      * @return mixed|null the property value or null if the property does not exist/is not set
+     * @noinspection PhpMissingParamTypeInspection
      */
     public function __get($strKey)
     {
@@ -45,6 +46,7 @@ trait YamlGetterSetterTrait
      *
      * @param string $strKey the property key (the name of the column/dca field)
      * @param mixed $varValue the property value
+     * @noinspection PhpMissingParamTypeInspection
      */
     public function __set($strKey, $varValue)
     {
