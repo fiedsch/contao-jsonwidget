@@ -90,7 +90,7 @@ trait YamlGetterSetterTrait
     {
         try {
             /** @noinspection PhpUndefinedFieldInspection */
-            $yamlData = Yaml::parse($this->arrData[static::$strYamlColumn])  ?? '';
+            $yamlData = Yaml::parse($this->arrData[static::$strYamlColumn]) ?? [];
         } /** @noinspection PhpUnusedLocalVariableInspection */ catch (ParseException $e) {
             // ignored
             $yamlData = [];
