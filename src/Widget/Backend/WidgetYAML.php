@@ -80,7 +80,7 @@ class WidgetYAML extends TextArea
      */
     public function generate()
     {
-        $this->varValue = $this->prettyPrintYaml($this->varValue);
+        $this->varValue = $this->prettyPrintYaml($this->varValue ?? '');
         return parent::generate();
     }
 
