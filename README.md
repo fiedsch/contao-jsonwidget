@@ -128,4 +128,8 @@ now creates `{}` in the respective database column.
 In version `0.7.0` we slightly changed this again to achieve the original goal: The storage of empty arrays as object (`{}`) is only enforced on the top level 
 of the data. In lower levels, empty arrays will be stored as arrays (`[]`) not as "empty" objects (`{}`): compare
 `{ "foo": [] }` (versions >= 0.7.0) to `{ "foo": {} }` (versions >=0.5.0 and <0.7.0). 
-```
+
+### Additional note
+
+When using Contao 5.7 or newer, you might not need this bundle. See
+[this PR](https://github.com/contao/contao/pull/8838) to learn, what the Contao native alternative is and how it works.
