@@ -132,4 +132,4 @@ of the data. In lower levels, empty arrays will be stored as arrays (`[]`) not a
 ### Additional note
 
 When using Contao 5.7 or newer, you might not need this bundle. See
-[this PR](https://github.com/contao/contao/pull/8838) to learn, what the Contao native alternative is and how it works.
+[this PR](https://github.com/contao/contao/pull/8838) or the section in the [official Contao documentation](https://docs.contao.org/5.x/dev/reference/dca/fields/#virtual-fields) to learn, what the Contao native alternative is and how it works.
